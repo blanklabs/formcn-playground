@@ -38,7 +38,9 @@ export const FormDemo: React.FC<FormDemoProps> = ({ formSchema, defaultValues, f
   } = usePlaygroundStore();
 
   const submitButtonColor = useMemo(() => {
-    return tailwindColors[formSpec.metadata.submitButtonColor][formSpec.metadata.submitButtonShade];
+    return tailwindColors[formSpec.metadata.submitButtonColor as keyof typeof tailwindColors][
+      formSpec.metadata.submitButtonShade as keyof (typeof tailwindColors)[keyof typeof tailwindColors]
+    ];
   }, [formSpec.metadata.submitButtonColor, formSpec.metadata.submitButtonShade]);
 
   // When we insert a new field, the key (which is the nextFieldId) passed to FormDemo is incremented.
@@ -77,7 +79,7 @@ export const FormDemo: React.FC<FormDemoProps> = ({ formSchema, defaultValues, f
             className="h-40"
             style={{
               backgroundColor: getTailwindColorHex({
-                color: formSpec.metadata.backgroundColor,
+                color: formSpec.metadata.backgroundColor as keyof typeof tailwindColors,
                 shade: formSpec.metadata.backgroundShade,
               }),
             }}

@@ -66,7 +66,7 @@ function parseField(field: WithIdAndKey<Field>) {
         return {
           fieldZodSchema: z.enum(options),
           propValueInSourceCode: `z.enum(${JSON.stringify(options)})`,
-          defaultValue: undefined,
+          defaultValue: options[0],
         };
       }
 

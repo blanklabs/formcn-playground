@@ -10,7 +10,7 @@ export function ShadeSelect({
   selectedColor,
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Root> & {
-  selectedColor: string;
+  selectedColor: keyof typeof tailwindColors;
 }) {
   return (
     <Select {...props}>
@@ -24,7 +24,8 @@ export function ShadeSelect({
               <div
                 className={`h-4 w-4 rounded-full`}
                 style={{
-                  backgroundColor: tailwindColors[selectedColor][shade],
+                  backgroundColor:
+                    tailwindColors[selectedColor][shade as keyof (typeof tailwindColors)[typeof selectedColor]],
                 }}
               />
               {shade}

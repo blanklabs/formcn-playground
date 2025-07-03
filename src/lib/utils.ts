@@ -79,8 +79,8 @@ export function isCloseToWhite(color: string, threshold: number = 10) {
   return 255 - r <= threshold && 255 - g <= threshold && 255 - b <= threshold;
 }
 
-export function getTailwindColorHex({ color, shade }: { color: string; shade: number }): string {
-  return tailwindColors[color][shade];
+export function getTailwindColorHex({ color, shade }: { color: keyof typeof tailwindColors; shade: number }): string {
+  return tailwindColors[color][shade as keyof (typeof tailwindColors)[keyof typeof tailwindColors]];
 }
 
 export function extractInitials(name: string): string {

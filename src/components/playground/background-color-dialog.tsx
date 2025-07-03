@@ -19,7 +19,9 @@ export function BackgroundColorDialog({
 }) {
   const { form, setBackground } = usePlaygroundStore();
 
-  const [selectedColor, setSelectedColor] = useState(form.metadata.backgroundColor);
+  const [selectedColor, setSelectedColor] = useState<keyof typeof tailwindColors>(
+    form.metadata.backgroundColor as keyof typeof tailwindColors,
+  );
   const [selectedShade, setSelectedShade] = useState(form.metadata.backgroundShade.toString());
 
   const handleSave = () => {
@@ -40,15 +42,22 @@ export function BackgroundColorDialog({
           </DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-2 sm:flex-row">
-          <ColorSelect value={selectedColor} onValueChange={setSelectedColor} />
+          <ColorSelect
+            value={selectedColor}
+            onValueChange={(value) => setSelectedColor(value as keyof typeof tailwindColors)}
+          />
           <ShadeSelect selectedColor={selectedColor} value={selectedShade} onValueChange={setSelectedShade} />
         </div>
         <div>
           <ColorCard
             className="h-32 w-full"
-            color={tailwindColors[selectedColor][parseInt(selectedShade)]}
+            color={
+              tailwindColors[selectedColor][
+                parseInt(selectedShade) as keyof (typeof tailwindColors)[typeof selectedColor]
+              ]
+            }
             name="Selected color"
-            description={`${selectedColor}-${selectedShade} (${tailwindColors[selectedColor][parseInt(selectedShade)]})`}
+            description={`${selectedColor}-${selectedShade} (${tailwindColors[selectedColor][parseInt(selectedShade) as keyof (typeof tailwindColors)[typeof selectedColor]]})`}
           />
         </div>
         <DialogFooter>

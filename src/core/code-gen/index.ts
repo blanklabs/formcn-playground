@@ -86,8 +86,8 @@ function generateDefaultFieldValue(
 
     case "date":
       if (field.format === "range") {
-        const defaultRange = defaultValues[field.key] || { start: "", end: "" };
-        return `${field.key}: { start: "${defaultRange.start}", end: "${defaultRange.end}" },`;
+        const defaultRange = defaultValues[field.key] as { start: string; end: string } | undefined;
+        return `${field.key}: { start: "${defaultRange?.start || ""}", end: "${defaultRange?.end || ""}" },`;
       }
       return `${field.key}: "${defaultValues[field.key] || ""}",`;
   }

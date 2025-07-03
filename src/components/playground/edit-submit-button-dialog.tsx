@@ -23,7 +23,7 @@ const formSchema = z.object({
   buttonLabel: z.string().min(1, { message: "A button label is required" }),
   buttonColor: z.string(),
   buttonShade: z.number(),
-  fullWidth: z.boolean().default(false),
+  fullWidth: z.boolean(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -129,8 +129,15 @@ export function EditSubmitButtonDialog({
                       <Button
                         className="w-full transition-all hover:opacity-90"
                         style={{
-                          backgroundColor: tailwindColors[buttonColor][buttonShade],
-                          color: getTextColorBasedOnBackground(tailwindColors[buttonColor][buttonShade]),
+                          backgroundColor:
+                            tailwindColors[buttonColor as keyof typeof tailwindColors][
+                              buttonShade as keyof (typeof tailwindColors)[keyof typeof tailwindColors]
+                            ],
+                          color: getTextColorBasedOnBackground(
+                            tailwindColors[buttonColor as keyof typeof tailwindColors][
+                              buttonShade as keyof (typeof tailwindColors)[keyof typeof tailwindColors]
+                            ],
+                          ),
                         }}
                         type="button"
                       >
@@ -171,11 +178,11 @@ export function EditSubmitButtonDialog({
                       <Label>Background color</Label>
                       <div className="flex flex-col gap-2 sm:flex-row">
                         <ColorSelect
-                          value={buttonColor}
+                          value={buttonColor as keyof typeof tailwindColors}
                           onValueChange={(value) => form.setValue("buttonColor", value)}
                         />
                         <ShadeSelect
-                          selectedColor={buttonColor}
+                          selectedColor={buttonColor as keyof typeof tailwindColors}
                           value={buttonShade.toString()}
                           onValueChange={(value) => form.setValue("buttonShade", parseInt(value))}
                         />

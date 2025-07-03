@@ -4,7 +4,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 import { tailwindColors } from "@/static/tailwind-colors";
 
-const colors = Object.keys(tailwindColors);
+const colors = Object.keys(tailwindColors) as (keyof typeof tailwindColors)[];
 
 export function ColorSelect({ ...props }: React.ComponentProps<typeof SelectPrimitive.Root>) {
   return (

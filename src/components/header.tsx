@@ -1,6 +1,6 @@
-import Link from "next/link";
 import { MousePointerClick } from "lucide-react";
-import { Tagline } from "@/components/tagline";
+import { Tagline } from "./tagline";
+import Link from "next/link";
 
 export function Header() {
   return (

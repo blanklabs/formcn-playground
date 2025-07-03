@@ -8,7 +8,7 @@ export function Tagline() {
 
   return (
     <AnimatePresence>
-      {pathname === "/" && (
+      {pathname === "/prompt" && (
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

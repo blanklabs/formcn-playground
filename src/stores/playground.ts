@@ -1,6 +1,7 @@
 import { generateFieldKey } from "@/core";
 import { Field, FieldWithIdAndKey, Form, FormMetadata } from "@/core/types";
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 const emptyForm: Form = {
   name: "My New Form",
@@ -62,110 +63,117 @@ interface PlaygroundState {
   setShowBackground: (showBackground: boolean) => void;
 }
 
-export const usePlaygroundStore = create<PlaygroundState>()((set) => ({
-  // UI
-  currentTab: "form",
-  compactToolbar: false,
-  backgroundDialogOpen: false,
-  editHeadingDialogOpen: false,
-  editSubmitButtonDialogOpen: false,
-  payloadPreview: null,
+export const usePlaygroundStore = create<PlaygroundState>()(
+  persist(
+    (set) => ({
+      // UI
+      currentTab: "form",
+      compactToolbar: false,
+      backgroundDialogOpen: false,
+      editHeadingDialogOpen: false,
+      editSubmitButtonDialogOpen: false,
+      payloadPreview: null,
 
-  // Form loading state
-  isLoading: false,
-  error: null,
-  isPublished: false,
+      // Form loading state
+      isLoading: false,
+      error: null,
+      isPublished: false,
 
-  // UI setters
-  setCurrentTab: (currentTab: "form" | "code") => set({ currentTab }),
-  setCompactToolbar: (compactToolbar: boolean) => set({ compactToolbar }),
-  setBackgroundDialogOpen: (backgroundDialogOpen: boolean) => set({ backgroundDialogOpen }),
-  setEditHeadingDialogOpen: (editHeadingDialogOpen: boolean) => set({ editHeadingDialogOpen }),
-  setEditSubmitButtonDialogOpen: (editSubmitButtonDialogOpen: boolean) => set({ editSubmitButtonDialogOpen }),
-  setPayloadPreview: (payloadPreview: string | null) => set({ payloadPreview }),
+      // UI setters
+      setCurrentTab: (currentTab: "form" | "code") => set({ currentTab }),
+      setCompactToolbar: (compactToolbar: boolean) => set({ compactToolbar }),
+      setBackgroundDialogOpen: (backgroundDialogOpen: boolean) => set({ backgroundDialogOpen }),
+      setEditHeadingDialogOpen: (editHeadingDialogOpen: boolean) => set({ editHeadingDialogOpen }),
+      setEditSubmitButtonDialogOpen: (editSubmitButtonDialogOpen: boolean) => set({ editSubmitButtonDialogOpen }),
+      setPayloadPreview: (payloadPreview: string | null) => set({ payloadPreview }),
 
-  // Form state
-  form: emptyForm,
-  nextFieldId: 0,
-
-  // Form state setters
-  setForm: (form: Form) => set({ form }),
-  setNextFieldId: (nextFieldId: number) => set({ nextFieldId }),
-  resetForm: () => {
-    set({
+      // Form state
       form: emptyForm,
       nextFieldId: 0,
-    });
-  },
-  loadForm: (slug: string) => {
-    // TODO: Implement form loading logic
-    // For now, this is a placeholder
-    console.log("Loading form with slug:", slug);
-  },
 
-  // Form utilities (fields)
-  addField: (field: Field) => {
-    set((state) => ({
-      nextFieldId: state.nextFieldId + 1,
-      form: {
-        ...state.form,
-        fields: [
-          ...state.form.fields,
-          {
-            ...field,
-            key: generateFieldKey(state.nextFieldId),
-            id: state.nextFieldId,
+      // Form state setters
+      setForm: (form: Form) => set({ form }),
+      setNextFieldId: (nextFieldId: number) => set({ nextFieldId }),
+      resetForm: () => {
+        set({
+          form: emptyForm,
+          nextFieldId: 0,
+        });
+      },
+      loadForm: (slug: string) => {
+        // TODO: Implement form loading logic
+        // For now, this is a placeholder
+        console.log("Loading form with slug:", slug);
+      },
+
+      // Form utilities (fields)
+      addField: (field: Field) => {
+        set((state) => ({
+          nextFieldId: state.nextFieldId + 1,
+          form: {
+            ...state.form,
+            fields: [
+              ...state.form.fields,
+              {
+                ...field,
+                key: generateFieldKey(state.nextFieldId),
+                id: state.nextFieldId,
+              },
+            ],
           },
-        ],
+        }));
       },
-    }));
-  },
-  removeField: (id: number) => {
-    set((state) => ({
-      form: {
-        ...state.form,
-        fields: state.form.fields.filter((field) => field.id !== id),
+      removeField: (id: number) => {
+        set((state) => ({
+          form: {
+            ...state.form,
+            fields: state.form.fields.filter((field) => field.id !== id),
+          },
+        }));
       },
-    }));
-  },
-  setField: (id: number, field: FieldWithIdAndKey) => {
-    set((state) => ({
-      form: {
-        ...state.form,
-        fields: state.form.fields.map((f) => (f.id === id ? field : f)),
+      setField: (id: number, field: FieldWithIdAndKey) => {
+        set((state) => ({
+          form: {
+            ...state.form,
+            fields: state.form.fields.map((f) => (f.id === id ? field : f)),
+          },
+        }));
       },
-    }));
-  },
-  setFields: (fields: FieldWithIdAndKey[]) => {
-    set((state) => ({
-      form: { ...state.form, fields },
-    }));
-  },
+      setFields: (fields: FieldWithIdAndKey[]) => {
+        set((state) => ({
+          form: { ...state.form, fields },
+        }));
+      },
 
-  // Form utilities (metadata)
-  setMetadata: (metadata: FormMetadata) => {
-    set((state) => ({
-      form: { ...state.form, metadata },
-    }));
-  },
-  setBackground: ({ color, shade }: { color: string; shade: number }) => {
-    set((state) => ({
-      form: {
-        ...state.form,
-        metadata: {
-          ...state.form.metadata,
-          backgroundColor: color,
-          backgroundShade: shade,
-        },
+      // Form utilities (metadata)
+      setMetadata: (metadata: FormMetadata) => {
+        set((state) => ({
+          form: { ...state.form, metadata },
+        }));
       },
-    }));
-  },
-  setShowBackground: (showBackground: boolean) => {
-    set((state) => ({
-      form: {
-        ...state.form,
-        metadata: { ...state.form.metadata, showBackground },
+      setBackground: ({ color, shade }: { color: string; shade: number }) => {
+        set((state) => ({
+          form: {
+            ...state.form,
+            metadata: {
+              ...state.form.metadata,
+              backgroundColor: color,
+              backgroundShade: shade,
+            },
+          },
+        }));
       },
-    }));
-  },
-}));
+      setShowBackground: (showBackground: boolean) => {
+        set((state) => ({
+          form: {
+            ...state.form,
+            metadata: { ...state.form.metadata, showBackground },
+          },
+        }));
+      },
+    }),
+    {
+      name: "playground",
+    },
+  ),
+);

@@ -4,6 +4,7 @@ import { EnumDemoField } from "./enum-demo-field";
 import { Control, FieldValues, UseFormReturn } from "react-hook-form";
 import { BooleanDemoField } from "./boolean-demo-field";
 import { DateDemoField } from "./date-demo-field";
+import { NumberDemoField } from "./number-demo-field";
 
 export function DemoField({
   field,
@@ -26,6 +27,9 @@ export function DemoField({
 
     case "date":
       return <DateDemoField field={field} formControl={formControl} />;
+
+    case "number":
+      return <NumberDemoField field={field} formControl={formControl} />;
 
     default:
       break;

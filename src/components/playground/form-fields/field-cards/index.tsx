@@ -4,6 +4,7 @@ import { StringFieldCard } from "./string-field-card";
 import { EnumFieldCard } from "./enum-field-card";
 import { BooleanFieldCard } from "./boolean-field-card";
 import { DateFieldCard } from "./date-field-card";
+import { NumberFieldCard } from "./number-field-card";
 
 export function FieldCard({ field }: { field: FieldWithIdAndKey }) {
   switch (field.type) {
@@ -15,6 +16,9 @@ export function FieldCard({ field }: { field: FieldWithIdAndKey }) {
 
     case "boolean":
       return <BooleanFieldCard field={field} />;
+
+    case "number":
+      return <NumberFieldCard field={field} />;
 
     case "date":
       return <DateFieldCard field={field} />;

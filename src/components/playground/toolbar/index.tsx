@@ -27,30 +27,16 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { NewFieldDialog } from "../form-fields/new-field-dialog";
-import { useResizeObserver } from "@/hooks/use-resize-observer";
 import { cn } from "@/lib/utils";
-// import { UndoRedo } from "./undo-redo";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { BackgroundColorDialog } from "../background-color-dialog";
 import { EditHeadingDialog } from "../edit-heading-dialog";
 import { EditSubmitButtonDialog } from "../edit-submit-button-dialog";
-
-function useToolbarResize() {
-  const { ref, width } = useResizeObserver();
-  const { setCompactToolbar } = usePlaygroundStore();
-
-  useEffect(() => {
-    setCompactToolbar(width < 360);
-  }, [width, setCompactToolbar]);
-
-  return { ref };
-}
 
 export function Toolbar() {
   const [clearFormDialogOpen, setClearFormDialogOpen] = useState(false);
   const {
     form,
-    compactToolbar,
     resetForm,
     setShowBackground,
     backgroundDialogOpen,
@@ -60,17 +46,13 @@ export function Toolbar() {
     editSubmitButtonDialogOpen,
     setEditSubmitButtonDialogOpen,
   } = usePlaygroundStore();
-  const { ref } = useToolbarResize();
 
   if (form.fields.length === 0) {
     return null;
   }
 
   return (
-    <div
-      ref={ref}
-      className={cn("mb-3 flex justify-between gap-1 rounded-lg", compactToolbar && "flex-col items-end gap-1.5")}
-    >
+    <div className="mb-3 flex justify-between gap-1 rounded-lg">
       <div className={cn("flex items-center gap-1")}>
         <NewFieldDialog />
         <DropdownMenu>

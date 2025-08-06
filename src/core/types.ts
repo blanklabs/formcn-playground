@@ -126,7 +126,6 @@ const FormMetadataSchema = z.object({
 export type FormMetadata = z.infer<typeof FormMetadataSchema>;
 
 export const FormSchema = z.object({
-  name: z.string().max(100),
   metadata: FormMetadataSchema,
   fields: z.array(FieldWithIdAndKeySchema),
 });

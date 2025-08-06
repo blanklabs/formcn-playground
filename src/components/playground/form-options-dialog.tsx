@@ -21,14 +21,17 @@ export function FormOptionsDialog({ open, onOpenChange }: { open: boolean; onOpe
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      formName: formSpec.name,
+      formName: formSpec.metadata.title,
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     setForm({
       ...formSpec,
-      name: values.formName,
+      metadata: {
+        ...formSpec.metadata,
+        title: values.formName,
+      },
     });
     onOpenChange(false);
   }

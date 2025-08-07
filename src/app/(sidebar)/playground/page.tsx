@@ -6,10 +6,10 @@ import { PayloadPreview } from "@/components/playground/live-preview/payload-pre
 import { Toolbar } from "@/components/playground/toolbar";
 import { usePlaygroundStore } from "@/stores/playground";
 import { useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 import { templates } from "@/static/templates";
 
-export default function PlaygroundPage() {
+function PlaygroundContent() {
   const searchParams = useSearchParams();
   const { setForm } = usePlaygroundStore();
 
@@ -42,5 +42,13 @@ export default function PlaygroundPage() {
         </div>
       </main>
     </>
+  );
+}
+
+export default function PlaygroundPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <PlaygroundContent />
+    </Suspense>
   );
 }

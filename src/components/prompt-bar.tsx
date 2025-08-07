@@ -101,30 +101,35 @@ export function PromptBar() {
             disabled={prompt.length !== 0 || isSubmitting}
             icon={PartyPopper}
             iconClassName="text-red-500 group-hover:text-red-600"
+            templateKey="birthday"
           />
           <TemplateButton
             text="Market research"
             disabled={prompt.length !== 0 || isSubmitting}
             icon={ChartBar}
             iconClassName="text-blue-500 group-hover:text-blue-600"
+            templateKey="marketResearch"
           />
           <TemplateButton
             text="Contact"
             disabled={prompt.length !== 0 || isSubmitting}
             icon={Phone}
             iconClassName="text-green-500 group-hover:text-green-600"
+            templateKey="contact"
           />
           <TemplateButton
             text="Event feedback"
             disabled={prompt.length !== 0 || isSubmitting}
             icon={MessageCircle}
             iconClassName="text-yellow-500 group-hover:text-yellow-600"
+            templateKey="eventFeedback"
           />
           <TemplateButton
             text="Workshop registration"
             disabled={prompt.length !== 0 || isSubmitting}
             icon={Calendar}
             iconClassName="text-purple-500 group-hover:text-purple-600"
+            templateKey="workshopRegistration"
           />
         </div>
         <div className="flex flex-col items-center gap-2 sm:flex-row">
@@ -150,11 +155,13 @@ function TemplateButton({
   disabled,
   icon: Icon,
   iconClassName,
+  templateKey,
 }: {
   text: string;
   disabled: boolean;
   icon: LucideIcon;
   iconClassName: string;
+  templateKey: string;
 }) {
   return (
     <Button
@@ -163,7 +170,7 @@ function TemplateButton({
       disabled={disabled}
       className="group flex w-auto items-center gap-2 transition-all [&_svg:not([class*='size-'])]:size-3"
     >
-      <Link className={cn(disabled && "pointer-events-none opacity-50")} href="/playground?template=birthday">
+      <Link className={cn(disabled && "pointer-events-none opacity-50")} href={`/playground?template=${templateKey}`}>
         <Icon size={8} className={cn(iconClassName)} />
         {text}
       </Link>

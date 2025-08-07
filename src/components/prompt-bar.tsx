@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import Link from "next/link";
-import { Play, ArrowUp, PartyPopper } from "lucide-react";
+import { Play, ArrowUp, PartyPopper, LucideIcon, Phone, ChartBar, Calendar, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Spinner } from "./spinner";
@@ -94,34 +94,79 @@ export function PromptBar() {
           </Button>
         </form>
       </Form>
-      <div className="mt-4 flex flex-col items-center gap-2 sm:flex-row">
-        <Button
-          asChild
-          variant="outline"
-          disabled={prompt.length !== 0 || isSubmitting}
-          className="group flex items-center gap-2 transition-all [&_svg:not([class*='size-'])]:size-3"
-        >
-          <Link
-            className={cn(prompt.length !== 0 && "pointer-events-none opacity-50")}
-            href="/playground?template=birthday"
+      <div className="mt-3 flex flex-col items-center justify-center space-y-3">
+        <div className="flex gap-2">
+          <TemplateButton
+            text="Birthday party"
+            disabled={prompt.length !== 0 || isSubmitting}
+            icon={PartyPopper}
+            iconClassName="text-red-500 group-hover:text-red-600"
+          />
+          <TemplateButton
+            text="Market research"
+            disabled={prompt.length !== 0 || isSubmitting}
+            icon={ChartBar}
+            iconClassName="text-blue-500 group-hover:text-blue-600"
+          />
+          <TemplateButton
+            text="Contact"
+            disabled={prompt.length !== 0 || isSubmitting}
+            icon={Phone}
+            iconClassName="text-green-500 group-hover:text-green-600"
+          />
+          <TemplateButton
+            text="Event feedback"
+            disabled={prompt.length !== 0 || isSubmitting}
+            icon={MessageCircle}
+            iconClassName="text-yellow-500 group-hover:text-yellow-600"
+          />
+          <TemplateButton
+            text="Workshop registration"
+            disabled={prompt.length !== 0 || isSubmitting}
+            icon={Calendar}
+            iconClassName="text-purple-500 group-hover:text-purple-600"
+          />
+        </div>
+        <div className="flex flex-col items-center gap-2 sm:flex-row">
+          <Button
+            asChild
+            variant="default"
+            disabled={prompt.length !== 0 || isSubmitting}
+            className="flex items-center gap-2 transition-all [&_svg:not([class*='size-'])]:size-3"
           >
-            Birthday invite template
-            <PartyPopper size={8} className="text-red-500 group-hover:text-red-600" />
-          </Link>
-        </Button>
-
-        <Button
-          asChild
-          variant="default"
-          disabled={prompt.length !== 0 || isSubmitting}
-          className="flex items-center gap-2 transition-all [&_svg:not([class*='size-'])]:size-3"
-        >
-          <Link className={cn(prompt.length !== 0 && "pointer-events-none opacity-50")} href="/playground">
-            Or, get started without AI
-            <Play size={8} className="fill-white" />
-          </Link>
-        </Button>
+            <Link className={cn(prompt.length !== 0 && "pointer-events-none opacity-50")} href="/playground">
+              Or, get started without AI
+              <Play size={8} className="fill-white" />
+            </Link>
+          </Button>
+        </div>
       </div>
     </>
+  );
+}
+
+function TemplateButton({
+  text,
+  disabled,
+  icon: Icon,
+  iconClassName,
+}: {
+  text: string;
+  disabled: boolean;
+  icon: LucideIcon;
+  iconClassName: string;
+}) {
+  return (
+    <Button
+      asChild
+      variant="outline"
+      disabled={disabled}
+      className="group flex w-auto items-center gap-2 transition-all [&_svg:not([class*='size-'])]:size-3"
+    >
+      <Link className={cn(disabled && "pointer-events-none opacity-50")} href="/playground?template=birthday">
+        <Icon size={8} className={cn(iconClassName)} />
+        {text}
+      </Link>
+    </Button>
   );
 }
